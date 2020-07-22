@@ -1,0 +1,9 @@
+<div class="filter-group">
+    <div class="form-check check">
+        <label class="hand-pointer form-check-label" [ngClass]="{'checked': option.isSelected === true}" title="{{option.text}}">
+            <input type="checkbox" class="form-check-input" [value]="option" [(ngModel)]="option.isSelected" (ngModelChange)="onOptionSelection()">
+            {{option.text}}
+          </label>
+    </div>
+    <app-option class="option" *ngFor="let child of option.child" [option]="child" (optionSelect)="onOptionSelection($event)"></app-option>
+  </div>

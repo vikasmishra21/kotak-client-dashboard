@@ -1,0 +1,39 @@
+<div class="row no-gutters h-100 text-white overflow-auto" style="background-color: #1e1e2d !important">
+    <div class="col">
+        <ul class="mb-0">
+            <mat-tree #tree [dataSource]="dataSource" [treeControl]="treeControl">
+                <!-- This is the tree node template for leaf nodes -->
+                <mat-tree-node *matTreeNodeDef="let node" matTreeNodeToggle class="text-white page-list-item" (click)="logNode(node)">
+                    <li class="w-100 {{node.borderTop}}">
+                        <div class="page-list-item-hover p-2 page-list-item pl-3" (click)="navigate(node.urlPath, node.variable)"
+                            [ngClass]="{'active-page': node.urlPath === currentUrl}">
+                           <div class="list">
+                            <i style="visibility: hidden;" class="fas fa-chevron-right"></i>
+                            <span class="d-inline-block" style="width:18px;color:#a2a3b7"><i class="fa {{node.icon}}"></i></span> {{node.name}}
+                           </div>
+                        </div>
+                    </li>
+               
+                </mat-tree-node>
+                
+                <!-- This is the tree node template for expandable nodes -->
+                <mat-nested-tree-node *matTreeNodeDef="let node; when: hasChild" class="text-white page-list-item mt-3">
+                    <li class="w-100 border-bottom">
+                        <div class="page-list-item-hover p-2 page-list-item pl-3" (click)="navigate(node.urlPath, node.variable)"
+                            [ngClass]="{'active-page': node.urlPath === currentUrl}" style="padding-left:1.5rem!important;">
+                            <span matTreeNodeToggle [attr.aria-label]="'toggle ' + node.name">
+                                <i *ngIf="treeControl.isExpanded(node)" class="fas fa-chevron-down mr-3"></i>
+                                <i *ngIf="!treeControl.isExpanded(node)" class="fas fa-chevron-right mr-3"></i>
+                            </span>
+                            <span class="d-inline-block" style="max-width:18px;color:#a2a3b7"><i class="fa {{node.icon}}"></i></span>{{node.name}}
+                        </div>
+                        <ul *ngIf="treeControl.isExpanded(node)" class="nestedLevel">
+                            <ng-container matTreeNodeOutlet></ng-container>
+                        </ul>
+                    </li>
+                </mat-nested-tree-node>
+            </mat-tree>
+      
+        </ul>
+    </div>
+</div>

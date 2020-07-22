@@ -1,0 +1,73 @@
+<app-progress-loading [show]="showLoader"></app-progress-loading>
+<div class="row no-gutters mb-3">
+  <div class="col-12 pr-0">
+    <app-content-header [title]="'Detractors'" [bases]="respondantBase" [icon]="'fire'"></app-content-header>
+  </div>
+
+  <!-- <div class="col-3 pr-0">
+        <div class="row no-gutters">
+            <div class="col mr-1">
+                <app-filter [filterConfig]="filterConfigs.location"></app-filter>
+            </div>
+
+            <div class="col">
+                <app-filter [filterConfig]="filterConfigs.branchCode"></app-filter>
+            </div>
+        </div>
+    </div> -->
+</div>
+
+<div class="row">
+  <div class="col">
+    <div class="card border">
+      <div class="card-body d-flex flex-column">
+        <app-chart-container [chart]="hotAletTableConfig" [updateData]="onDataUpdate" class="flex-grow-1 d-none">
+        </app-chart-container>
+        <app-chart-container *ngIf="popUpHideChart" [chart]="hotAlertTableRespondentConfig"
+          [updateData]="onDataUpdateAlertPopUp" class="flex-grow-1 d-none">
+        </app-chart-container>
+
+        <div class="w-100 h-100 overflow-auto">
+          <table class="table table-sm border mb-0"
+            style="table-layout: fixed;width: 99.5%;" [style.width.px]="getContentWidth()">
+            <thead class="thead-light">
+              <tr>
+                <th scope="col" *ngFor="let header of headers">{{header}}</th>
+              </tr>
+            </thead>
+          </table>
+          <div style="overflow: auto;" class="border-bottom" [style.height.px]="getContentHeight()">
+            <table id="hotAlertTable" class="table table-sm table-striped border table-bordered mb-1"
+              style="table-layout: fixed;">
+              <tbody>
+                <tr *ngFor="let row of hotAlertTable">
+                  <td *ngFor="let col of row" (click)="openDialog(row)" class="cursor-pointer">{{col}}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="font-italic text-secondary p-2 mt-2 float-left">*Click on a row to open the drill down showing survey
+            response.</div>
+          <ul *ngIf="pager.pages && pager.pages.length" class="pagination float-right clickable mt-2">
+            <li [ngClass]="{disabled:pager.currentPage === 1}" (click)="setPage(1)">
+              <a><i class="fa fa-angle-double-left mr-2"></i>First</a>
+            </li>
+            <li [ngClass]="{disabled:pager.currentPage === 1}" (click)="setPage(pager.currentPage - 1)">
+              <a><i class="fa fa-angle-left mr-2"></i>Previous</a>
+            </li>
+            <li *ngFor="let page of pager.pages" (click)="setPage(page)"
+              [ngClass]="{active:pager.currentPage === page}">
+              <a>{{page}}</a>
+            </li>
+            <li [ngClass]="{disabled:pager.currentPage === pager.totalPages}" (click)="setPage(pager.currentPage + 1)">
+              <a>Next<i class="fa fa-angle-right ml-2"></i></a>
+            </li>
+            <li [ngClass]="{disabled:pager.currentPage === pager.totalPages}" (click)="setPage(pager.totalPages)">
+              <a>Last<i class="fa fa-angle-double-right ml-2"></i></a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

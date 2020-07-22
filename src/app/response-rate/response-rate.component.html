@@ -1,0 +1,62 @@
+<app-progress-loading [show]="showLoader"></app-progress-loading>
+<div class="row no-gutters mb-3">
+    <div class="col-12">
+        <app-content-header [title]="'Response Rate'" [bases]="respondantBase" [icon]="'reply'"></app-content-header>
+    </div>
+</div>
+
+
+<div class="mt-3">
+  <div class="col-3 pl-0 float-left">
+    <div class="card widget-height">
+      <h5 class="card-title font-weight-normal">Response rate</h5>
+      <div class="card-body d-flex flex-column">
+          <app-chart-container [chart]="responseRateConfig" [updateData]="onDataUpdate" class="flex-grow-1">
+          </app-chart-container>
+      </div>
+  </div>
+  </div>
+  <div class="col-9 pl-0 pr-0 float-left">
+    <div class="card widget-height">
+      <h5 class="card-title font-weight-normal">Region</h5>
+      <div class="card-body d-flex flex-column">
+          <app-chart-container *ngIf="onChangeScale" [chart]="regionConfig" [updateData]="onDataUpdate" class="flex-grow-1">
+          </app-chart-container>
+      </div>
+  </div>
+  </div>
+  <div class="clearfix"></div>
+</div>
+<div class="mt-3">
+  <div class="col-3 pl-0  float-left">
+    <div class="card widget-height">
+      <h5 class="card-title font-weight-normal">Number of machines</h5>
+      <div class="card-body d-flex flex-column">
+          <app-chart-container *ngIf="onChangeScale" [chart]="numberOfMachinesConfig" [updateData]="onDataUpdate"
+              class="flex-grow-1">
+          </app-chart-container>
+      </div>
+  </div>
+  </div>
+  <div class="col-9 pl-0 pr-0  float-left">
+    <div class="card widget-height">
+      <h5 class="card-title font-weight-normal">Type of store</h5>
+      <div class="card-body d-flex flex-column">
+          <app-chart-container *ngIf="onChangeScale" [chart]="storeTypeConfig" [updateData]="onDataUpdate" class="flex-grow-1">
+          </app-chart-container>
+      </div>
+  </div>
+  </div>
+  <div class="clearfix"></div>
+</div>
+<div class="mt-3">
+  <div class="col-12 p-0">
+    <div class="card widget-height" >
+      <h5 class="card-title font-weight-normal">Location</h5>
+      <div class="card-body d-flex flex-column" style="width: auto;overflow: auto;">
+          <app-chart-container *ngIf="onChangeScale" [chart]="locationConfig" [updateData]="onDataUpdate" class="flex-grow-1">
+          </app-chart-container>
+      </div>
+  </div>
+  </div>
+</div>

@@ -1,0 +1,9 @@
+<div>
+  <div class="bold">
+    {{score}}
+    <label *ngIf="difference">
+      <i *ngIf="difference < 0" class="arrow-downward" style="color: red"></i>
+      <i *ngIf="difference > 0" class="arrow-upward" style="color: darkgreen"></i>
+    </label>
+  </div>
+</div>

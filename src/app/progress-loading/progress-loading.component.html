@@ -1,0 +1,13 @@
+<div *ngIf="show" class="row no-gutters w-100 h-100 align-items-center position-absolute progress-loader"  [style.left.px]="getProgress()"  [style.right.px]="getProgress()">
+    <div class="col-3 p-5 text-center ml-auto mr-auto">
+        <div class="progress">
+            <div class="progress-bar progress-bar-striped progress-bar-animated w-100" role="progressbar"
+                aria-valuenow="90" aria-valuemin="0" aria-valuemax="100"></div>
+        </div>
+        <span class="text-white">Loading
+          <div class="spinner-grow spinner-grow-sm text-light" role="status"></div>
+          <div class="spinner-grow spinner-grow-sm text-light" role="status"></div>
+          <div class="spinner-grow spinner-grow-sm text-light" role="status"></div>
+        </span>
+    </div>
+</div>

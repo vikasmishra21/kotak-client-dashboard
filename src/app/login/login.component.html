@@ -1,0 +1,68 @@
+<div class="container-fluid h-100 p-0">
+  <div class="row h-100 no-gutters">
+    <!-- SAML form for SSO redirect -->
+    <form id="form-saml" ngNoForm novalidate [action]="samlFormModel.url" method="post" #samlForm>
+      <input id="request" type="hidden" name="SAMLRequest" [(ngModel)]="samlFormModel.request" />
+      <input id="relay" type="hidden" name="RelayState" [(ngModel)]="samlFormModel.relay" />
+      <input id="submit" type="submit" [formaction]="samlFormModel.url" value="Submit" formmethod="post"
+        style="visibility: hidden;" #submitInput />
+    </form>
+
+    <!-- Login block -->
+    <div class="col h-100" *ngIf="displayLoginBlock">
+      <div class="row h-100 no-gutters align-items-center justify-content-center">
+        <div class="col-4">
+          <div class="row justify-content-center" style="background: rgba(0, 0, 0,.25)">
+            <div class="col p-5">
+              <div class="text-center">
+                <img src="../../assets/images/logo.png" />
+              </div>
+              <div class="sign-in-text text-center text-white mt-4">Let's Get Started</div>
+
+              <br>
+
+              <div class="input-group mb-4">
+                <div class="input-group-prepend">
+                  <span class="input-group-text" id="basic-addon1"><i class="far fa-user"></i></span>
+                </div>
+                <input type="text" class="form-control" required placeholder="Username"
+                  [(ngModel)]="credentials.username" aria-label="Username" aria-describedby="basic-addon1">
+              </div>
+
+              <div class="input-group mb-4">
+                <div class="input-group-prepend">
+                  <span class="input-group-text" id="basic-addon1"><i class="fas fa-key"></i></span>
+                </div>
+                <input type="password" class="form-control" required placeholder="Password"
+                  [(ngModel)]="credentials.password" (keypress)="onPasswordKeypress($event)" aria-label="Password"
+                  aria-describedby="basic-addon1">
+              </div>
+
+              <!-- For displaying error -->
+              <div></div>
+
+              <div class="mb-3">
+                <!-- <mat-checkbox class="float-left" [(ngModel)]="checked">Remember me</mat-checkbox> -->
+                <button class="btn btn-link p-0 float-right text-white" (click)="forgotPassword()">Forgot
+                  password?</button>
+                <span class="clearfix"></span>
+              </div>
+
+              <div>
+                <button class="btn btn-primary btn-block login-btn"
+                  [attr.disabled]="credentials.username === '' || credentials.password === '' ? 'disabled' : null"
+                  (click)="login()">
+                  LOGIN
+                  <div *ngIf="loginInProcess" class="spinner-grow spinner-grow-sm text-light" role="status">
+                    <span class="sr-only">Loading...</span>
+                  </div>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="bg"></div>
+  </div>
+</div>

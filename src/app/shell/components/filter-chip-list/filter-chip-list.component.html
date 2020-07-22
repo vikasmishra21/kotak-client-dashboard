@@ -1,0 +1,38 @@
+<div class="font-normal mt-1 w-100">
+  <!--<div *ngIf="seriesSelectorChips.size > 0">
+    <div class="filter-chip font-weight-bold">Show For :</div>
+    <div class="chip-list" >
+      <label *ngFor="let chip of seriesSelectorChips | keyvalue">
+        <app-filter-chip *ngFor="let option of chip.value" [filterOption]="option"
+                         [variable]="chip.key" [hideDelete]="hideDelete"></app-filter-chip>
+        <div style="clear:both"></div>
+      </label>
+    </div>
+  </div>-->
+  <div *ngIf="timePeriodChips.size > 0" class="float-left w-100">
+    <div class="filter-chip">Time Period :</div>
+    <div class="chip-list">
+      <label *ngFor="let chip of timePeriodChips | keyvalue">
+        <app-filter-chip *ngFor="let option of chip.value" [filterOption]="option" [variable]="chip.key"
+          [hideDelete]="hideDelete"></app-filter-chip>
+        <div style="clear:both"></div>
+      </label>
+    </div>
+  </div>
+  <div *ngIf="filterChips.size > 0" class="header mt-2">
+    <div class='col-12 p-0'>
+
+      <div class="filter-chip"><b>Filter Applied :</b></div>
+      <div class="chip-list">
+        <label *ngFor="let chip of filterChips | keyvalue" style="display: inline-block;" class="mb-0">
+          <app-filter-chip *ngFor="let option of chip.value" [filterOption]="option" [variable]="chip.key"
+            [hideDelete]="hideDelete"></app-filter-chip>
+          <div style="clear:both"></div>
+        </label>
+      </div>
+      <div class="clearfix"></div>
+    </div>
+  </div>
+  <div class="clearfix"></div>
+</div>
+<div class="clearfix"></div>

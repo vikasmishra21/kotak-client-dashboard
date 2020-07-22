@@ -1,0 +1,37 @@
+<div class="header">
+  <span class="header-title float-left"><i class="fa fa-{{icon}} mr-2"></i>{{title}}</span>
+
+  <div class='d-inline-block p-1 pl-3 pr-3 float-right btn mt-2 rounded border-0' style="background-color: #f2f2f2!important;color:#0095d9!important" *ngIf="bases !== undefined">
+    <span>Base: <b style="font-size: 16px;">{{bases}}</b></span>
+  </div>
+  <div class='d-inline-block p-1 float-right mt-2 mr-2 rounded' style="background-color: #f2f2f2!important;
+  padding: 3px 9px!important;" *ngIf="headerName != 'HOT ALERTS' && headerName != 'OVERALL DRIVERS' && headerName != 'QUERY RESOLUTION' && headerName != 'NPS OVERVIEW'">
+    <mat-slide-toggle [formControl]="isScaleTo100" (change)="onChangeScale()" style="color:#003772">Scale 100%</mat-slide-toggle>
+  </div>  
+  <div class='d-inline-block p-1 float-right mt-2 mr-2 rounded'
+    *ngIf="headerName == 'NPS OVERVIEW'"  style="background-color: #f2f2f2!important;
+    padding: 3px 9px!important;">
+    <mat-slide-toggle [formControl]="isScaleTo100" (change)="onChangeScale()" style="color:#003772">Auto Scale</mat-slide-toggle>
+  </div>
+  <div class='d-inline-block p-1 float-right mt-2 mr-2 rounded'   style="background-color: #f2f2f2!important;
+  padding: 3px 9px!important;"
+    *ngIf="headerName != 'HOT ALERTS' && headerName != 'OVERALL DRIVERS' && headerName != 'QUERY RESOLUTION'">
+    <mat-slide-toggle [formControl]="showLabels" (change)="onChangeLabels()" style="color:#003772">Show Labels</mat-slide-toggle>
+
+  </div>
+  <div class='d-inline-block p-1 float-right mr-2 mt-1' *ngIf="showTableNets">
+    <mat-label class="mr-2" style="font-size: 1.1rem;">Select Measure: </mat-label>
+    <mat-form-field>     
+      <mat-select [(ngModel)]="selectedTableNet" (selectionChange)="onSelection.emit(this.selectedTableNet)">
+        <mat-option *ngFor="let net of tableNets" [value]="net.value">{{net.text}}</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+  <div class="clearfix"></div>
+</div>
+<!-- <span *ngIf="appliedFilters.length === 0" class="pt-2 text-secondary">No filter applied</span> -->
+<!-- <div class="header mt-2">
+      <div class='col-12 p-0'>
+      </div>
+    </div> -->
+<app-filter-chip-list></app-filter-chip-list>

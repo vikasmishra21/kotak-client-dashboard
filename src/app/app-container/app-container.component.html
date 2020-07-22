@@ -1,0 +1,57 @@
+<div class="container-fluid h-100 p-0">
+    <div class="row no-gutters h-100">
+        <div class="col">
+            <div class="h-100 d-flex flex-column">
+                <!-- Header -->
+                <div class="row no-gutters pt-1 pb-1 dashboard-header shadow">
+                    <div class="col-3 header-menu-text">
+                        <span class="cursor-pointer" (click)="togglePageNavigation()"><i
+                                class="fas fa-align-justify ml-3"></i></span>
+
+                        <span class="ml-3 kotak-font-color"><span><img
+                                    src="../../assets/images/Kotak_logo.png" /></span><span><img
+                                    src="../../assets/images/kotak-logo.png" /></span></span>
+                    </div>
+
+                    <div class="col"></div>
+
+                    <div class="col-2 p-2 pr-5 pt-3" style="padding-right: 2.5rem!important;">
+                        <span title="Logout" (click)="logOut()"
+                            class="p-2 ml-2 bg-white text-dark rounded float-right cursor-pointer"  style="padding-bottom: .2rem!important;"><i
+                                class="fas fa-sign-out-alt"></i></span>
+                        <span title="Filters" (click)="toggleFilterPanel()"
+                            class="p-2 bg-white text-dark rounded float-right cursor-pointer" style="padding-bottom: .2rem!important;"><i
+                                class="fas fa-filter"></i></span>
+                        <span class="clearfix"></span>
+                    </div>
+                </div>
+
+                <!-- Body -->
+                <div class="row no-gutters flex-grow-1" style="margin-top: 55px;overflow: auto;">
+                    <div class="col d-flex flex-column" [style.height.px]="getContentHeight()">
+                        <mat-drawer-container class="flex-grow-1">
+                            <mat-drawer id="pageNavigationPanel" mode="over"
+                                (closedStart)="onPageNavigationCloseStart()" [opened]="pageNavigationPanelOpened"
+                                class="w-25">
+                                <app-page-list (menuItemClick)="onNavigationClick()"></app-page-list>
+                            </mat-drawer>
+
+                            <mat-drawer position="end" (closedStart)="onFilterPanelCloseStart()"
+                                [opened]="filterPanelOpened" mode="over" class="filter-panel">
+                                <app-filter-panel (onDataLoadStart)="onFilterDataLoadStart()"
+                                    (onDataLoadEnd)="onFilterDataLoadEnd()" (onCloseClick)="onFilterPanelCloseStart()"
+                                    (filterItemClick)="onFilterChangeHide()">
+                                </app-filter-panel>
+                            </mat-drawer>
+
+                            <mat-drawer-content class="page-content p-3 pl-4 pr-4">
+                                <app-progress-loading *ngIf="showProgress"></app-progress-loading>
+                                <router-outlet></router-outlet>
+                            </mat-drawer-content>
+                        </mat-drawer-container>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

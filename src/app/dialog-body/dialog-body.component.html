@@ -1,0 +1,35 @@
+<h2 mat-dialog-title class="dialog-title" style="font-weight: normal!important;">Respondent Details
+  <button (click)="showDetails()" class="float-right btn btn-primary"><i class="fa fa-eye mr-2"></i>View Customer Data</button>
+  <div *ngIf="showDetail" class="alert alert-info p-2 mt-2" style="font-size: 14px;">
+<app-progress-loading [show]="showLoader"></app-progress-loading>
+
+    {{resDetail === '' ? 'No Data' : resDetail}}</div>
+ <div class="clearfix"></div>
+</h2>
+
+<mat-dialog-content>
+  <table class="table table-sm border mb-0" style="table-layout: fixed;width: 99.5%;"  [style.width.px]="getContentWidth()">
+    <thead>
+      <tr class="thead-light">
+        <th style="width: 10%">#</th>
+        <th  style="width:50%">Questions</th>
+        <th>Answers</th>
+      </tr>
+    </thead>
+  </table>
+  <div  style="max-height:55vh;overflow: auto;">
+    <table id="dataTable" class="table table-striped table-sm border table-bordered tableBody" style="table-layout: fixed;">
+     <tbody>
+      <tr *ngFor="let row of data;let i=index;">
+        <td style="width: 10%"> Q{{i+1}}.</td>
+        <td style="width:50%"><b>{{row[0]}}</b></td>
+        <td>{{row[1]}}</td>
+      </tr>
+     </tbody>
+    </table>
+  </div>
+
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button mat-button [mat-dialog-close]="data"  class="btn btn-light ml-auto" style="padding:6px 15px" cdkFocusInitial>Close</button>
+</mat-dialog-actions>

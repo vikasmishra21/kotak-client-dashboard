@@ -1,0 +1,232 @@
+<app-progress-loading [show]="showLoader"></app-progress-loading>
+<div class="row no-gutters mb-3">
+    <div class="col-12">
+        <app-content-header [title]="'NPS Overview'" [bases]="respondantBase" [icon]="'tachometer-alt'"></app-content-header>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-9">
+        <div class="row mb-3">
+            <div class="col-4">
+                <div class="card widget-height">
+                    <h5 class="card-title font-weight-normal">Net Promoter Score (NPS)</h5>
+                    <div class="card-body d-flex flex-column">
+                        <app-chart-container [chart]="npsChart" [updateData]="onDataUpdate" class="flex-grow-1">
+                        </app-chart-container>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-8 pl-0">
+                <div class="card widget-height">
+                    <h5 class="card-title font-weight-normal">NPS by main reason</h5>
+                    <div class="card-body d-flex flex-column">
+                        <app-chart-container *ngIf="onChangeScale" [chart]="mainReasonChart" [updateData]="onDataUpdate" class="flex-grow-1">
+                        </app-chart-container>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <div class="col-4">
+                <div class="card widget-height">
+                    <h5 class="card-title font-weight-normal">NPS by number of machines</h5>
+                    <div class="card-body d-flex flex-column">
+                        <app-chart-container *ngIf="onChangeScale" [chart]="numberOfMachinesChart" [updateData]="onDataUpdate" class="flex-grow-1">
+                        </app-chart-container>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-8 pl-0">
+                <div class="card widget-height">
+                    <h5 class="card-title font-weight-normal">NPS by region</h5>
+                    <div class="card-body d-flex flex-column">
+                        <app-chart-container *ngIf="onChangeScale" [chart]="npsByRegionChart" [updateData]="onDataUpdate" class="flex-grow-1">
+                        </app-chart-container>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <div class="col">
+                <div class="card widget-height">
+                    <h5 class="card-title font-weight-normal">NPS by type of store</h5>
+                    <div class="card-body d-flex flex-column">
+                        <app-chart-container *ngIf="onChangeScale" [chart]="storeTypeChart" [updateData]="onDataUpdate" class="flex-grow-1">
+                        </app-chart-container>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mb-1" hidden>
+            <div class="col">
+                <h4 class="border-bottom">World Line</h4>
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <div class="col-6">
+                <div class="card widget-height">
+                    <h5 class="card-title font-weight-normal">NPS by world line</h5>
+                    <div class="card-body d-flex flex-column">
+                        <app-chart-container *ngIf="onChangeScale" [chart]="wordlineChart" [updateData]="onDataUpdate" class="flex-grow-1">
+                        </app-chart-container>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-6 pl-0">
+                <div class="card widget-height">
+                    <h5 class="card-title font-weight-normal">NPS by times visited</h5>
+                    <div class="card-body d-flex flex-column">
+                        <app-chart-container *ngIf="onChangeScale" [chart]="npsByTimesVisited" [updateData]="onDataUpdate" class="flex-grow-1">
+                        </app-chart-container>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-3 pl-0">
+        <div class="row mb-3">
+            <div class="col">
+                <div class="card border border-success topLocation  widget-height">
+                    <div class="card-body d-flex flex-column p-0">
+                        <h5 class="card-title font-weight-normal text-success m-0">Top 5 Location</h5>
+                        <app-chart-container [chart]="locationByNPSTableConfig" style="display: none;"
+                            [updateData]="onDataUpdate">
+                        </app-chart-container>
+
+                        <table class="table table-sm">
+                            <thead class="thead-light">
+                                <tr>
+                                    <th style="width: 10%" class="text-center">#</th>
+                                    <th scope="col" style="width: 40%">Location</th>
+                                    <th scope="col">Region</th>
+                                    <th scope="col" style="width: 15%">NPS</th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+                                <tr *ngFor="let row of top5LocationsByNPS; let i = index">
+                                    <td class="text-center">{{i+1}}</td>
+                                    <td>{{row[1]}}</td>
+                                    <td>{{row[0]}}</td>
+                                    <td><div class="badge" [style.backgroundColor]="getBgColor(row[2])"  [style.color]="getTextColor(row[2])">{{row[2] === 'NaN' ? 'NA' : row[2]}}</div></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <div class="col">
+                <div class="card border border-danger bottomLocation  widget-height">
+                    <div class="card-body d-flex flex-column p-0">
+                        <h5 class="card-title font-weight-normal text-danger m-0">Bottom 5 Location</h5>
+
+                        <table class="table table-sm">
+                            <thead class="thead-light">
+                                <tr>
+                                    <th style="width: 10%" class="text-center">#</th>
+                                    <th scope="col" style="width: 40%">Location</th>
+                                    <th scope="col">Region</th>
+                                    <th scope="col" style="width: 15%">NPS</th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+                                <tr *ngFor="let row of bottom5LocationByNPS; let i = index">
+                                    <td class="text-center">{{i+1}}</td>
+                                    <td>{{row[1]}}</td>
+                                    <td>{{row[0]}}</td>
+                                    <td><div class="badge" [style.backgroundColor]="getBgColor(row[2])"  [style.color]="getTextColor(row[2])">{{row[2] === 'NaN' ? 'NA' : row[2]}}</div></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <div class="col">
+                <div class="card border border-success topPSM  widget-height">
+                    <div class="card-body d-flex flex-column p-0">
+                        <h5 class="card-title font-weight-normal text-success m-0">Top 5 PSM</h5>
+                        <app-chart-container [chart]="psmByNPSTableConfig" style="display: none;"
+                            [updateData]="onDataUpdate">
+                        </app-chart-container>
+
+                        <div class="overflow-auto">
+                            <table class="table able-sm">
+                                <thead class="thead-light">
+                                    <tr>
+                                        <th style="width: 10%" class="text-center">#</th>
+                                        <th scope="col">PSM</th>
+                                        <th scope="col" style="width: 30%">Location</th>
+                                        <th scope="col">Region</th>
+                                        <th scope="col" style="width: 15%">NPS</th>
+                                    </tr>
+                                </thead>
+
+                                <tbody>
+                                    <tr *ngFor="let row of top5PSMByNPS; let i = index">
+                                        <td class="text-center">{{i+1}}</td>
+                                        <td [attr.title]="row[2]" style="width: 30px" class="text-truncate">{{row[2]}}
+                                        </td>
+                                        <td style="width: 30px" class="text-truncate" [attr.title]="row[1]">{{row[1]}}</td>
+                                        <td style="width: 30px" class="text-truncate" [attr.title]="row[0]">{{row[0]}}</td>
+                                        <td style="width: 30px"><div class="badge" [style.backgroundColor]="getBgColor(row[3])"  [style.color]="getTextColor(row[3])">{{row[3] === 'NaN' ? 'NA' : row[3]}}</div></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <div class="col">
+                <div class="card border border-danger bottomPSM  widget-height">
+                    <div class="card-body d-flex flex-column p-0">
+                        <h5 class="card-title font-weight-normal text-danger mb-0">Bottom 5 PSM</h5>
+
+                        <div class="overflow-auto">
+                            <table class="table table-sm">
+                                <thead class="thead-light">
+                                    <tr>
+                                        <th style="width: 10%" class="text-center">#</th>
+                                        <th scope="col">PSM</th>
+                                        <th scope="col" style="width: 30%">Location</th>
+                                        <th scope="col">Region</th>
+                                        <th scope="col" style="width: 15%">NPS</th>
+                                    </tr>
+                                </thead>
+
+                                <tbody>
+                                    <tr *ngFor="let row of bottom5PSMByNPS; let i = index">
+                                        <td class="text-center">{{i+1}}</td>
+                                        <td [attr.title]="row[2]" style="width: 30px" class="text-truncate">{{row[2]}}
+                                        </td>
+                                        <td style="width: 30px" class="text-truncate" [attr.title]="row[1]">{{row[1]}}</td>
+                                        <td style="width: 30px" class="text-truncate" [attr.title]="row[0]">{{row[0]}}</td>
+                                        <td style="width: 30px"><div class="badge" [style.backgroundColor]="getBgColor(row[3])"  [style.color]="getTextColor(row[3])">{{row[3] === 'NaN' ? 'NA' : row[3]}}</div></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

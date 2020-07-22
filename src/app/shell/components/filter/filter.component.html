@@ -1,0 +1,84 @@
+<div (clickOutside)="closeDropdown($event)">
+  <select *ngIf="viewType === FilterViewTypes.SelectBox" class="form-control mb-2" #singleSelect
+    [ngModel]="singleSelectOption" (ngModelChange)="onFilterSelection(singleSelect.value)">
+    <option value="null" disabled selected>Select {{pFilterConfig.variableText}}</option>
+    <option *ngFor="let option of filteredOptions" [style.display]="option.isHidden ? 'none': ''" [value]="option.code">
+      {{option.text}}</option>
+  </select>
+
+  <div *ngIf="viewType === FilterViewTypes.CheckBox" class="pos-rel filterPanel">
+    <button (click)="toggleDropdown()" class="form-control hand-pointer"
+      style="text-align: left;"> <i class="mr-2 {{filterConfig.icon}}" [style.color]="filterConfig.iconColor"></i>{{filterConfig.placeHolder || filterConfig.variableText}} <i class="fa fa-angle-down ml-auto"></i></button>
+    <div class="nested-dropdown brandsList" [hidden]="!showDropdown">
+      <div class="fixOption">
+        <label class="w-100 mb-1">
+          <input placeholder="Search..." [(ngModel)]="searchText" class="form-control"
+            (keyup)="searchTerm$.next(searchText)">
+        </label>
+        <div style="margin-top: 10px;">
+          <!--<label class="hand-pointer blue-btn" title="Select All" (click)="onSelectAll()"> <i class="fa fa-check mr-2"></i>Select All</label>-->
+          <label class="hand-pointer blue-btn" title="Submit" (click)="onSubmit()"> <i
+              class="fa fa-check mr-2 pos-rel"></i>Submit</label>
+          <label class="hand-pointer red-btn" title="Clear All"
+            (click)="onClearAll(!filterConfig.enableSubmitButton)"><i class="fa fa-times mr-2"></i>Clear
+            All</label>
+          <label class="shaking" id="limit" #limit *ngIf="filterConfig.maxSelectionLimit !== undefined && filterConfig.placeHolder === 'Brand Selector'">You can only
+            select up to {{filterConfig.maxSelectionLimit}} brands</label>
+            <label class="shaking" id="limit" #limit *ngIf="filterConfig.maxSelectionLimit !== undefined && filterConfig.placeHolder === 'Retailer Selector'">
+              You can only select up to {{filterConfig.maxSelectionLimit}} retailers</label>
+        </div>
+      </div>
+      <div class="scrollOption">
+        <app-option *ngFor="let option of filteredOptions" [option]="option" [hidden]="option.isHidden"
+          (optionSelect)="onMultipleOptionSelection($event)"></app-option>
+
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="viewType === FilterViewTypes.ComparisonRadio" class="pos-rel filterPanel">
+    <button (click)="toggleDropdown()" class="form-control hand-pointer mr-1"
+      style="text-align: left;width:120px;">{{filterConfig.placeHolder || filterConfig.variableText}} <i class="fa fa-angle-down ml-auto"></i></button>
+    <div class="nested-dropdown drop-back p-0" [hidden]="!showDropdown">
+      <p *ngFor="let opt of filteredOptions" class="p-2 mb-0 border-bottom">
+        <input id="{{pFilterConfig.variable+opt.code}}" type="radio" [value]="opt.code" [ngModel]="singleSelectOption"
+          (ngModelChange)="onFilterSelection(opt.code)" name="{{pFilterConfig.variable}}">
+        <label for="{{pFilterConfig.variable+opt.code}}" class="mb-0 text-white font-sm">{{opt.text}} </label>
+      </p>
+      <p class="bg-dark p-2">Compare With</p>
+      <p *ngFor="let opt of filteredOptions" [hidden]="opt.code === singleSelectOption"
+        [ngClass]="{'disabled': singleSelectOption === 'null'}" class="p-2 mb-0  border-bottom">
+        <input id="{{'comp'+pFilterConfig.variable+opt.code}}" type="radio" name="{{pFilterConfig.variable + 'comp'}}"
+          [value]="opt.code" [ngModel]="compareModel" (ngModelChange)="onCompareSelection(opt.code)">
+        <label for="{{'comp'+pFilterConfig.variable+opt.code}}" class="mb-0 text-white font-sm">{{opt.text}} </label>
+      </p>
+      <p [ngClass]="{'disabled': singleSelectOption === 'null'}" class="p-2 mb-0  border-bottom">
+        <input id="{{'null' + pFilterConfig.variable}}" type="radio" name="{{pFilterConfig.variable + 'comp'}}"
+          [value]="null" [ngModel]="compareModel" (ngModelChange)="onCompareSelection('null')">
+        <label for="{{'null' + pFilterConfig.variable}}" class="mb-0 text-white font-sm">None </label>
+      </p>
+    </div>
+  </div>
+
+  <div *ngIf="viewType === FilterViewTypes.NumericInput"  class="pos-rel filterPanel">
+    <button (click)="toggleDropdown()" class="form-control hand-pointer"
+      style="text-align: left;">{{filterConfig.placeHolder || filterConfig.variableText}} <i class="fa fa-angle-down ml-auto"></i></button>
+    <div class="nested-dropdown brandsList" [hidden]="!showDropdown">
+      <div class="fixOption">
+        <div style="margin-top: 10px;">
+          <!--<label class="hand-pointer blue-btn" title="Select All" (click)="onSelectAll()"> <i class="fa fa-check mr-2"></i>Select All</label>-->
+          <label class="hand-pointer blue-btn" title="Submit" (click)="onSubmitNumeric(from.value, to.value)"> <i
+              class="fa fa-check mr-2 pos-rel"></i>Submit</label>
+        </div>
+      </div>
+      <div class="scrollOption">
+        <label class="w-100 mb-1">
+          <input placeholder="From" [(ngModel)]="filteredOptions[0].code" class="form-control text-white" #from>
+        </label>
+        <label class="w-100 mb-1">
+          <input placeholder="To" [(ngModel)]="filteredOptions[1].code" class="form-control text-white" #to>
+        </label>
+      </div>
+    </div>
+  </div>
+</div>
